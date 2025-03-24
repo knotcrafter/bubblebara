@@ -64,7 +64,7 @@
         // Убираем капибару через 25 секунд
         setTimeout(() => {
           capybara.remove();
-        }, 25000); // 15000 миллисекунд = 25 секунд
+        }, 25000); // 25000 миллисекунд = 25 секунд
 
         // Анимация для прыгающих капибар
         animateCapybara(capybara);
@@ -101,14 +101,6 @@
 
       // Генерация капибар
       setInterval(createCapybara, 1000); // Каждую секунду появляется новая капибара
-
-      // Обработчик клика для сообщений
-      window.addEventListener("click", () => {
-        const messageText = prompt("Введите сообщение для капибар!");
-        if (messageText) {
-          createMessage(messageText);
-        }
-      });
     </script>
   </body>
 </html>
