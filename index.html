@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Capybara Bounce</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <style>
       /* Устанавливаем размер body и html на 100% для растяжения фона */
       html,
@@ -42,10 +43,38 @@
         user-select: none;
         pointer-events: none;
       }
+
+      /* Стили для блока с email внизу страницы */
+      .email-container {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        color: #fff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+      }
+
+      .email-container a {
+        color: #fffd00;
+        text-decoration: none;
+      }
+
+      .email-container a:hover {
+        text-decoration: underline;
+      }
     </style>
   </head>
   <body>
     <div id="capybara-container"></div>
+
+    <div class="email-container">
+      <p>
+        Contact us:
+        <a href="mailto:craftingmarvels@gmail.com">craftingmarvels@gmail.com</a>
+      </p>
+    </div>
 
     <script>
       const capybaraContainer = document.getElementById("capybara-container");
