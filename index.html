@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capybara Bounce</title>
+    <style>
+      /* Устанавливаем размер body и html на 100% для растяжения фона */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      body {
+        /* Убираем все отступы и устанавливаем фоновый градиент */
+        background: linear-gradient(
+          45deg,
+          #ff9a8b,
+          #fddc6e,
+          #ff6f61
+        ); /* Теплый градиент */
+      }
+
+      .capybara {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        background-image: url("capybara.jpg"); /* Локальное изображение капибары */
+        background-size: cover;
+        border-radius: 50%;
+      }
+
+      .message {
+        position: absolute;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        color: #fff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        user-select: none;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="capybara-container"></div>
+
+    <script>
+      const capybaraContainer = document.getElementById("capybara-container");
+
+      // Генерация капибары с случайными позициями
+      function createCapybara() {
+        const capybara = document.createElement("div");
+        capybara.classList.add("capybara");
+
+        // Случайное начальное положение
+        capybara.style.left = `${Math.random() * window.innerWidth}px`;
+        capybara.style.top = `${Math.random() * window.innerHeight}px`;
+
+        capybaraContainer.appendChild(capybara);
+
+        // Убираем капибару через 15 секунд
+        setTimeout(() => {
+          capybara.remove();
+        }, 15000); // 15000 миллисекунд = 15 секунд
+
+        // Анимация для прыгающих капибар
+        animateCapybara(capybara);
+      }
+
+      function animateCapybara(capybara) {
+        const speedX = (Math.random() - 0.5) * 3;
+        const speedY = (Math.random() - 0.5) * 3;
+
+        let x = parseFloat(capybara.style.left);
+        let y = parseFloat(capybara.style.top);
+
+        function bounce() {
+          x += speedX;
+          y += speedY;
+
+          if (x < 0 || x > window.innerWidth - 100) {
+            capybara.style.left = `${x < 0 ? 0 : window.innerWidth - 100}px`;
+          } else {
+            capybara.style.left = `${x}px`;
+          }
+
+          if (y < 0 || y > window.innerHeight - 100) {
+            capybara.style.top = `${y < 0 ? 0 : window.innerHeight - 100}px`;
+          } else {
+            capybara.style.top = `${y}px`;
+          }
+
+          requestAnimationFrame(bounce);
+        }
+
+        bounce();
+      }
+
+      // Генерация капибар
+      setInterval(createCapybara, 1000); // Каждую секунду появляется новая капибара
+
+      // Обработчик клика для сообщений
+      window.addEventListener("click", () => {
+        const messageText = prompt("Введите сообщение для капибар!");
+        if (messageText) {
+          createMessage(messageText);
+        }
+      });
+    </script>
+  </body>
+</html>
