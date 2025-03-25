@@ -20,12 +20,17 @@
 
       .capybara {
         position: absolute;
-        width: 120px;
-        height: 120px;
+        width: 90px;
+        height: 90px;
         background-image: url("capybara.jpg");
         background-size: cover;
         border-radius: 50%;
         transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+      }
+
+      .highlight {
+        border: 5px solid yellow;
+        box-shadow: 0 0 10px yellow;
       }
 
       .capybara:hover,
@@ -81,6 +86,16 @@
       const clickCountSpan = document.getElementById("click-count");
 
       let clickCount = 0;
+      let waitingForPair = false;
+      let pair = [];
+
+      const backgrounds = [
+        "linear-gradient(45deg, #ff9a8b, #fddc6e, #ff6f61)",
+        "linear-gradient(45deg, #a8d0e6, #f0f7f4, #f4c7c3)",
+        "linear-gradient(45deg, #d1e0e0, #f4f0fb, #a8c4d2)",
+        "linear-gradient(45deg, #c2e0c6, #e9f0d8, #f9e0d8)",
+      ];
+      let backgroundIndex = 0;
 
       function createCapybara() {
         const capybara = document.createElement("div");
@@ -88,6 +103,22 @@
 
         capybara.style.left = `${Math.random() * window.innerWidth}px`;
         capybara.style.top = `${Math.random() * window.innerHeight}px`;
+
+        // Если нужно создать пару
+        if (waitingForPair) {
+          waitingForPair = false;
+          pair.push(capybara);
+          capybara.classList.add("highlight");
+        } else {
+          pair.push(capybara);
+          setTimeout(() => {
+            if (pair.length === 2) {
+              pair[0].classList.add("highlight");
+              pair[1].classList.add("highlight");
+              waitingForPair = true;
+            }
+          }, Math.random() * 3000 + 2000); // Случайное время появления пары
+        }
 
         capybara.addEventListener("mouseenter", () =>
           disappearCapybara(capybara)
@@ -100,6 +131,7 @@
 
         setTimeout(() => {
           capybara.remove();
+          pair = []; // Очистить пару, если капибары не были нажаты
         }, 25000);
 
         animateCapybara(capybara);
@@ -109,8 +141,22 @@
         capybara.style.opacity = "0";
         capybara.style.transform = "scale(0.5)";
         setTimeout(() => capybara.remove(), 300);
+
         clickCount++;
         clickCountSpan.textContent = clickCount;
+
+        // Проверяем, исчезли ли обе капибары из пары
+        if (pair.length === 2) {
+          if (pair[0].style.opacity === "0" && pair[1].style.opacity === "0") {
+            pair = [];
+          }
+        }
+
+        // Меняем фон каждые 50 лопнувших
+        if (clickCount % 50 === 0) {
+          document.body.style.background = backgrounds[backgroundIndex];
+          backgroundIndex = (backgroundIndex + 1) % backgrounds.length;
+        }
       }
 
       function animateCapybara(capybara) {
